@@ -1,3 +1,26 @@
+# gptnote/gptnote.txt
+
+
+# frontend/front_todo/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("", include('todo.urls')),
+]
+
+
+# frontend/todo/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('todos', views.todo_list, name='todo_list'),
+]
+
+
+# frontend/todo/templates/todo/todo_list.html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -30,7 +53,7 @@
                     listItem.className = 'list-group-item';
 
                     const link = document.createElement('a');
-                    link.href = `http://127.0.0.1:8000/todo/${todo.id}/`; 
+                    link.href = '';  // Update with link to individual todo
                     link.textContent = todo.title;
 
                     listItem.appendChild(link);
@@ -67,4 +90,13 @@
     </script>
 </body>
 </html>
+
+
+# frontene/todo/views.py
+from django.shortcuts import render
+
+def todo_list(request):
+    return render(request, 'todo/todo_list.html', {})
+
+
 

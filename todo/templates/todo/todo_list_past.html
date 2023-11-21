@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <title>GET 요청 예시</title>
+    </head>
+    <body>
+        <h1>서버 응답 결과:</h1>
+        <div id="result"></div>
+        <script>
+            fetch('http://127.0.0.1:8000/todo/')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('result').innerText = JSON.stringify(data, null, 2);
+                })
+                .catch(error => console.error('Error:', error));
+        </script>
+    </body>
+</html>
