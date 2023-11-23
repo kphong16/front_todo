@@ -21,48 +21,77 @@
     </div>
 
     <script>
-        fetch('http://127.0.0.1:8000/todo/')
-            .then(response => response.json())
-            .then(data => {
-                const todoList = document.getElementById('todo-list');
-                data.forEach(todo => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'list-group-item';
+        function fetchTodos() {
+            fetch('http://127.0.0.1:8000/todo/')
+                .then(response => response.json())
+                .then(data => {
+                    const todoList = document.getElementById('todo-list');
+                    todoList.innerHTML = '';
+                    data.forEach(todo => {
+                        const listItem = document.createElement('li');
+                        listItem.className = 'list-group-item';
+    
+                        const link = document.createElement('a');
+                        link.href = `/todo/${todo.id}`;
+                        link.textContent = todo.title;
+                        listItem.appendChild(link);
+    
+                        if (todo.important) {
+                            const badge = document.createElement('span');
+                            badge.className = 'badge badge-danger';
+                            badge.textContent = '!';
+                            listItem.appendChild(badge);
+                        }
+    
+                        const buttonsDiv = document.createElement('div');
+                        buttonsDiv.style.float = 'right'
+    
+                        const completeButton = document.createElement('a');
+                        completeButton.className = 'btn btn-danger';
+                        completeButton.textContent = '완료';
+                        completeButton.href = '#';
+                        completeButton.onclick = (event) => {
+                            event.preventDefault();
+                            // alert(`Button clicked for todo ID: ${todo.id}`);
+                            // console.log(`Complete button clicked for todo ID: ${todo.id}`);
+                            completeTodo(todo.id);
+                        };
+    
+                        const editButton = document.createElement('a');
+                        editButton.className = 'btn btn-outline-primary';
+                        editButton.textContent = '수정하기';
+                        editButton.href = '';  // Update with link for edit action
+    
+                        buttonsDiv.appendChild(completeButton);
+                        buttonsDiv.appendChild(editButton);
+    
+                        listItem.appendChild(buttonsDiv);
+    
+                        todoList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-                    const link = document.createElement('a');
-                    link.href = `/todo/${todo.id}`;
-                    link.textContent = todo.title;
-                    listItem.appendChild(link);
-
-                    if (todo.important) {
-                        const badge = document.createElement('span');
-                        badge.className = 'badge badge-danger';
-                        badge.textContent = '!';
-                        listItem.appendChild(badge);
-                    }
-
-                    const buttonsDiv = document.createElement('div');
-                    buttonsDiv.style.float = 'right'
-
-                    const completeButton = document.createElement('a');
-                    completeButton.className = 'btn btn-danger';
-                    completeButton.textContent = '완료';
-                    completeButton.href = '';  // Update with link for completion action
-
-                    const editButton = document.createElement('a');
-                    editButton.className = 'btn btn-outline-primary';
-                    editButton.textContent = '수정하기';
-                    editButton.href = '';  // Update with link for edit action
-
-                    buttonsDiv.appendChild(completeButton);
-                    buttonsDiv.appendChild(editButton);
-
-                    listItem.appendChild(buttonsDiv);
-
-                    todoList.appendChild(listItem);
-                });
+        function completeTodo(todoId) {
+            fetch(`http://127.0.0.1:8000/todo/${todoId}/`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ complete: true }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    fetchTodos();
+                } else {
+                    console.error('Error completing todo');
+                }
             })
             .catch(error => console.error('Error:', error));
+        }
+
+        fetchTodos();
     </script>
 </body>
 </html>
