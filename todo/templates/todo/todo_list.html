@@ -30,9 +30,8 @@
                     listItem.className = 'list-group-item';
 
                     const link = document.createElement('a');
-                    link.href = `http://127.0.0.1:8000/todo/${todo.id}/`; 
+                    link.href = `/todo/${todo.id}`;
                     link.textContent = todo.title;
-
                     listItem.appendChild(link);
 
                     if (todo.important) {
@@ -43,7 +42,7 @@
                     }
 
                     const buttonsDiv = document.createElement('div');
-                    buttonsDiv.style.float = 'right';
+                    buttonsDiv.style.float = 'right'
 
                     const completeButton = document.createElement('a');
                     completeButton.className = 'btn btn-danger';

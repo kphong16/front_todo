@@ -9,37 +9,26 @@
 <body>
     <div class="container">
         <h1>TODO 상세보기</h1>
-        <div class="card" id="todo-card" style="display: none;">
-            <div class="card-body">
-                <h5 class="card-title" id="todo-title"></h5>
-                <p class="card-text" id="todo-description"></p>
-                <a href="{% url 'todo_list' %}" class="btn btn-primary">목록으로</a>
+            <div class="card">
+                <div class="card-body" id="todo-detail">
+                    <h3 id="todo-title"></h3>
+                    <p id="todo-description"></p>
+                </div>
             </div>
-        </div>
+        <a href="/todos" class="btn btn-primary mt-3">목록으로</a>
     </div>
 
     <script>
-        // Assuming the todo ID is passed as a query parameter
-        const queryParams = new URLSearchParams(window.location.search);
-        const todoId = queryParams.get('id');
+        const pathArray = window.location.pathname.split('/');
+        const todoId = pathArray[pathArray.length - 1];
 
-        if (todoId) {
-            fetch(`http://127.0.0.1:8000/todo/${todoId}/`)
-                .then(response => response.json())
-                .then(data => {
-                    const todoCard = document.getElementById('todo-card');
-                    document.getElementById('todo-title').textContent = data.title;
-                    document.getElementById('todo-description').textContent = data.description;
-
-                    todoCard.style.display = 'block';
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Handle errors, e.g., show an error message
-                });
-        } else {
-            // Handle the case where todo ID is not present
-        }
+        fetch(`http://127.0.0.1:8000/todo/${todoId}/`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('todo-title').textContent = data.title;
+                document.getElementById('todo-description').textContent = data.description;
+            })
+            .catch(error => console.error('Error:', error));
     </script>
 </body>
 </html>
