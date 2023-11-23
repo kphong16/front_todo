@@ -10,10 +10,8 @@
     <div class="container">
         <h1>TODO 목록 앱</h1>
         <p>
-            <!-- Add Todo link (Update with actual link if needed) -->
-            <a href=""><i class="bi-plus"></i>Add Todo</a>
-            <!-- Link to completed todos (Update with actual link if needed) -->
-            <a href="" class="btn btn-primary" style="float:right">완료한 TODO 목록</a>
+            <a href="{% url 'add_todo' %}"><i class="bi-plus"></i>Add Todo</a>
+            <a href="{% url 'completed_todos' %}" class="btn btn-primary" style="float:right">완료한 TODO 목록</a>
         </p>
         <ul class="list-group" id="todo-list">
             <!-- Todo items will be added here dynamically -->

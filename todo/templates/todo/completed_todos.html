@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Completed Todos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Completed Todos</h1>
+        <ul class="list-group" id="completed-todo-list">
+            <!-- Completed todo items will be added here dynamically -->
+        </ul>
+        <a href="{% url 'todo_list' %}" class="btn btn-primary mt-3">Back to Todo List</a>
+    </div>
+
+    <script>
+        fetch('http://127.0.0.1:8000/todo/completed/')
+            .then(response => response.json())
+            .then(data => {
+                const completedTodoList = document.getElementById('completed-todo-list');
+                data.forEach(todo => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item';
+                    listItem.textContent = todo.title;
+                    completedTodoList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
