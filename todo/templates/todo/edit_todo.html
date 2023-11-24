@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+    <meta charset='UTF-8'>
+    <title>Edit Todo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css" />
+</head>
+<body>
+    <div class="container">
+        <h1>Edit Todo</h1>
+        <form id="edit-todo-form">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Update Todo</button>
+        </form>
+    </div>
+
+    <script>
+        const todoId = new URLSearchParams(window.location.search).get('id');
+        
+        if (todoId) {
+            fetch(`http://127.0.0.1:8000/todo/${todoId}/`)
+                .then(response => response.json())
+                .then(todo => {
+                    document.getElementById('title').value = todo.title;
+                    document.getElementById('description').value = todo.description;
+                    // Additional code to handle form submission...
+                });
+        }
+        document.getElementById('edit-todo-form').onsubmit = updateTodo;
+
+        function updateTodo(event) {
+            event.preventDefault();
+
+            const todoId = new URLSearchParams(window.location.search).get('id');
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+
+            fetch(`http://127.0.0.1:8000/todo/${todoId}/`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: title, description: description })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = '/todos';
+                } else {
+                    console.error('Failed to update todo');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>

@@ -22,3 +22,6 @@ def add_todo(request):
         if response.status_code == 201:
             return redirect(reverse('todo_list'))
     return render(request, 'todo/add_todo.html')
+
+def edit_todo(request):
+    return render(request, 'todo/edit_todo.html')

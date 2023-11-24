@@ -20,7 +20,7 @@
 
     <script>
         const pathArray = window.location.pathname.split('/');
-        const todoId = pathArray[pathArray.length - 1];
+        const todoId = pathArray[pathArray.length - 2];
 
         fetch(`http://127.0.0.1:8000/todo/${todoId}/`)
             .then(response => response.json())

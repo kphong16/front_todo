@@ -50,15 +50,13 @@
                         completeButton.href = '#';
                         completeButton.onclick = (event) => {
                             event.preventDefault();
-                            // alert(`Button clicked for todo ID: ${todo.id}`);
-                            // console.log(`Complete button clicked for todo ID: ${todo.id}`);
                             completeTodo(todo.id);
                         };
     
                         const editButton = document.createElement('a');
                         editButton.className = 'btn btn-outline-primary';
                         editButton.textContent = '수정하기';
-                        editButton.href = '';  // Update with link for edit action
+                        editButton.href = `/edit_todo/?id=${todo.id}`;
     
                         buttonsDiv.appendChild(completeButton);
                         buttonsDiv.appendChild(editButton);
